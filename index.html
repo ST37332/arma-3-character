@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Андрей "Комовец" Комончиков | Metro Exodus</title>
+    <style>
+        :root {
+            --metro-dark: #0a0a0a;
+            --metro-darker: #050505;
+            --metro-gray: #1a1a1a;
+            --metro-light: #2a2a2a;
+            --metro-accent: #8b0000;
+            --metro-accent-light: #a52a2a;
+            --metro-text: #d4d4d4;
+            --metro-text-dim: #8a8a8a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--metro-dark);
+            color: var(--metro-text);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(139, 0, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(42, 42, 42, 0.1) 0%, transparent 50%);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: rgba(10, 10, 10, 0.95);
+            border-bottom: 1px solid var(--metro-accent);
+            padding: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--metro-accent), transparent);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .character-name {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--metro-text);
+            text-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+        }
+        
+        .character-callsign {
+            font-size: 1.5rem;
+            color: var(--metro-accent);
+            font-style: italic;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+        
+        .game-logo {
+            font-size: 1.2rem;
+            color: var(--metro-accent);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 1px solid var(--metro-accent);
+            padding: 8px 15px;
+            background-color: rgba(139, 0, 0, 0.1);
+        }
+        
+        .tabs-container {
+            margin-top: 30px;
+            background-color: var(--metro-darker);
+            border: 1px solid var(--metro-light);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .tabs-header {
+            display: flex;
+            background-color: var(--metro-gray);
+            border-bottom: 1px solid var(--metro-accent);
+        }
+        
+        .tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            color: var(--metro-text-dim);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background-color: var(--metro-accent);
+            transition: width 0.3s ease;
+        }
+        
+        .tab:hover {
+            color: var(--metro-text);
+            background-color: rgba(139, 0, 0, 0.1);
+        }
+        
+        .tab.active {
+            color: var(--metro-text);
+            background-color: rgba(139, 0, 0, 0.2);
+        }
+        
+        .tab.active::after {
+            width: 100%;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .main-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .profile-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, var(--metro-gray), var(--metro-darker));
+            border: 1px solid var(--metro-accent);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--metro-accent);
+            font-size: 1.2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-image::after {
+            content: "ИЗОБРАЖЕНИЕ ПЕРСОНАЖА";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .info-section {
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            color: var(--metro-accent);
+            border-bottom: 1px solid var(--metro-light);
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .info-item {
+            margin-bottom: 15px;
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(42, 42, 42, 0.5);
+        }
+        
+        .info-label {
+            font-weight: bold;
+            min-width: 200px;
+            color: var(--metro-text);
+        }
+        
+        .info-value {
+            color: var(--metro-text-dim);
+        }
+        
+        .additional-info {
+            background-color: rgba(42, 42, 42, 0.3);
+            padding: 20px;
+            border-left: 3px solid var(--metro-accent);
+            margin-top: 20px;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--metro-accent);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: -34px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--metro-accent);
+            border: 2px solid var(--metro-darker);
+        }
+        
+        .timeline-date {
+            font-weight: bold;
+            color: var(--metro-accent);
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        
+        .timeline-content {
+            display: none;
+            background-color: rgba(42, 42, 42, 0.5);
+            padding: 15px;
+            border-left: 3px solid var(--metro-accent);
+            margin-top: 10px;
+            border-radius: 0 5px 5px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .timeline-item:hover .timeline-content {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .psychology-text {
+            text-align: justify;
+            font-style: italic;
+            line-height: 1.7;
+            background-color: rgba(42, 42, 42, 0.3);
+            padding: 20px;
+            border-left: 3px solid var(--metro-accent);
+        }
+        
+        .connections-list {
+            list-style-type: none;
+        }
+        
+        .connections-list li {
+            padding: 15px 0;
+            border-bottom: 1px solid var(--metro-light);
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .connections-list li::before {
+            content: "•";
+            color: var(--metro-accent);
+            position: absolute;
+            left: 0;
+            font-size: 1.5rem;
+        }
+        
+        .connections-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .badge {
+            background-color: var(--metro-gray);
+            padding: 8px 15px;
+            border-radius: 3px;
+            font-size: 0.9rem;
+            border: 1px solid var(--metro-accent);
+            color: var(--metro-text-dim);
+        }
+        
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid var(--metro-light);
+            color: var(--metro-text-dim);
+            font-size: 0.9rem;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .metro-border {
+            border: 1px solid var(--metro-light);
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: rgba(26, 26, 26, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <h1 class="character-name">Андрей Комончиков</h1>
+                    <div class="character-callsign">Позывной: "Комовец"</div>
+                </div>
+                <div class="game-logo">Metro Exodus</div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="tabs-container">
+            <div class="tabs-header">
+                <button class="tab active" data-tab="main-info">Основная информация</button>
+                <button class="tab" data-tab="biography">Биография</button>
+                <button class="tab" data-tab="connections">Связи</button>
+            </div>
+            
+            <div class="tab-content active" id="main-info">
+                <div class="main-info-grid">
+                    <div>
+                        <div class="profile-image"></div>
+                        
+                        <div class="metro-border">
+                            <h2 class="section-title">Основная информация</h2>
+                            <div class="info-item">
+                                <div class="info-label">Имя:</div>
+                                <div class="info-value">Андрей Комончиков</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Позывной:</div>
+                                <div class="info-value">Комовец</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Возраст:</div>
+                                <div class="info-value">39 лет</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Семейное положение:</div>
+                                <div class="info-value">Холост</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Рост:</div>
+                                <div class="info-value">186 см</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="metro-border">
+                            <h2 class="section-title">Дополнительная информация</h2>
+                            <p>Андрей участвовал во многих конфликтах, включая Проект "Новороссия". Состоял в ЧВК 'MAP'. Имеет большой боевой и медицинский опыт. Бывший сотрудник СОБР и ОМОН. Имеет водительские права с категорией C, D и E.</p>
+                            
+                            <div class="badges">
+                                <div class="badge">ЧВК MAP</div>
+                                <div class="badge">СОБР</div>
+                                <div class="badge">ОМОН</div>
+                                <div class="badge">Медицинская подготовка</div>
+                                <div class="badge">Водительские права C,D,E</div>
+                                <div class="badge">Проект "Новороссия"</div>
+                                <div class="badge">Сирийский конфликт</div>
+                            </div>
+                        </div>
+                        
+                        <div class="metro-border">
+                            <h2 class="section-title">Особые навыки</h2>
+                            <ul class="connections-list">
+                                <li>Тактическая медицина и первая помощь в боевых условиях</li>
+                                <li>Вождение тяжелой техники (категории C, D, E)</li>
+                                <li>Партизанская тактика и выживание в экстремальных условиях</li>
+                                <li>Владение различными видами огнестрельного оружия</li>
+                                <li>Координация действий в группе и командование</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="biography">
+                <div class="metro-border">
+                    <h2 class="section-title">Хронология событий</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">5 лет</div>
+                            <div class="timeline-content">
+                                Трагически потерял обоих родителей в автомобильной аварии. Это событие наложило отпечаток на всё его детство и дальнейшую жизнь.
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">11 лет</div>
+                            <div class="timeline-content">
+                                Первая любовь закончилась болезненным предательством, что укрепило его недоверие к людям и сформировало закрытый характер.
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">22 года</div>
+                            <div class="timeline-content">
+                                После службы в армии вступает в ЧВК 'MAP', где проходит интенсивную подготовку и участвует в первых боевых операциях.
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">26 лет</div>
+                            <div class="timeline-content">
+                                Направлен в Сирию, где принимает участие в боевых действиях. Получает ценный опыт ведения боя в городских условиях и пустыне.
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">34 года</div>
+                            <div class="timeline-content">
+                                После многих лет партизанской войны в Сирии возвращается в Россию. За время службы приобрел репутацию надежного и опытного бойца.
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">39 лет</div>
+                            <div class="timeline-content">
+                                Настоящее время. Продолжает работать в зонах конфликтов, передавая опыт молодым бойцам и выполняя особые задания.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metro-border">
+                    <h2 class="section-title">Психологический портрет</h2>
+                    <p class="psychology-text">
+                        Андрей — закаленный в боях профессионал, для которого война стала привычной средой. Многократно сталкивался с гибелью товарищей, что выработало в нем психологическую защиту — эмоциональную отстраненность. Не склонен к сантиментам, принимает решения холодно и расчетливо. Сохраняет верность немногим близким людям, но новых связей избегает. В критических ситуациях демонстрирует хладнокровие и выдержку, приобретенные за годы службы в горячих точках. Имеет развитое чувство долга и ответственности за своих людей. Потеря родителей в детстве и предательство в юности сформировали его замкнутый характер и недоверие к окружающим.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="connections">
+                <div class="metro-border">
+                    <h2 class="section-title">Связи и контакты</h2>
+                    <ul class="connections-list">
+                        <li><strong>ЧВК 'MAP'</strong> - Имеет прочные связи с руководством организации, включая основателей и ключевых командиров</li>
+                        <li><strong>Вооруженные Силы РФ</strong> - Поддерживает контакты с высокопоставленными офицерами различных родов войск</li>
+                        <li><strong>Ветераны конфликтов</strong> - Обширная сеть контактов среди ветеранов различных горячих точек</li>
+                        <li><strong>Силовые структуры</strong> - Знаком с представителями силовых ведомств нескольких стран</li>
+                        <li><strong>Бывшие коллеги из СОБР и ОМОН</strong> - Сохранил связи с некоторыми бывшими сослуживцами</li>
+                        <li><strong>Местные проводники</strong> - Имеет доверенных контактов в регионах своих операций</li>
+                    </ul>
+                </div>
+                
+                <div class="metro-border">
+                    <h2 class="section-title">Репутация</h2>
+                    <p>Среди сослуживцев и командиров имеет репутацию надежного и профессионального бойца, способного выполнять задачи в самых сложных условиях. Известен своей выдержкой и способностью сохранять хладнокровие в критических ситуациях. В то же время, его замкнутость и недоверие к новым людям иногда создают трудности в установлении контактов с непроверенными лицами.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>Досье персонажа | Андрей "Комовец" Комончиков | Arma 3</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
