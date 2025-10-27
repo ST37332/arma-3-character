@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Андрей "Комовец" Комончиков | Arma 3</title>
+    <title>Андрей "Комовец" Комончиков | Metro Exodus</title>
     <style>
         :root {
             --metro-dark: #0a0a0a;
@@ -229,60 +229,126 @@
             margin-top: 20px;
         }
         
-        .timeline {
+        /* НОВАЯ ХРОНОЛОГИЯ В ВИДЕ КАРТЫ */
+        .timeline-map {
             position: relative;
-            padding-left: 30px;
+            padding: 40px 0;
+            overflow-x: auto;
         }
         
-        .timeline::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background-color: var(--metro-accent);
+        .timeline-track {
+            position: relative;
+            height: 4px;
+            background: var(--metro-accent);
+            margin: 0 100px;
         }
         
-        .timeline-item {
+        .timeline-events {
+            display: flex;
+            justify-content: space-between;
             position: relative;
-            margin-bottom: 25px;
+            margin-top: 40px;
+        }
+        
+        .timeline-event {
+            position: relative;
+            width: 200px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
         
-        .timeline-item::before {
-            content: "";
+        .timeline-marker {
             position: absolute;
-            left: -34px;
-            top: 5px;
-            width: 12px;
-            height: 12px;
+            top: -28px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--metro-accent);
+            border: 3px solid var(--metro-dark);
             border-radius: 50%;
-            background-color: var(--metro-accent);
-            border: 2px solid var(--metro-darker);
+            z-index: 2;
+            transition: all 0.3s ease;
         }
         
-        .timeline-date {
+        .timeline-event:hover .timeline-marker {
+            background: var(--metro-accent-light);
+            transform: translateX(-50%) scale(1.2);
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.7);
+        }
+        
+        .event-content {
+            position: absolute;
+            top: 40px;
+            left: 0;
+            width: 280px;
+            background: rgba(42, 42, 42, 0.9);
+            border: 1px solid var(--metro-accent);
+            padding: 15px;
+            border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .timeline-event:hover .event-content {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .event-year {
             font-weight: bold;
             color: var(--metro-accent);
+            font-size: 1.2rem;
             margin-bottom: 5px;
-            font-size: 1.1rem;
         }
         
-        .timeline-content {
-            display: none;
-            background-color: rgba(42, 42, 42, 0.5);
-            padding: 15px;
-            border-left: 3px solid var(--metro-accent);
-            margin-top: 10px;
-            border-radius: 0 5px 5px 0;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        .event-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--metro-text);
         }
         
-        .timeline-item:hover .timeline-content {
-            display: block;
-            animation: fadeIn 0.3s ease;
+        .event-description {
+            font-size: 0.9rem;
+            color: var(--metro-text-dim);
+            line-height: 1.5;
+        }
+        
+        .branch {
+            position: absolute;
+            height: 2px;
+            background: var(--metro-accent);
+            width: 100px;
+            top: -2px;
+        }
+        
+        .branch-left {
+            left: -100px;
+        }
+        
+        .branch-right {
+            right: -100px;
+        }
+        
+        .branch-event {
+            position: absolute;
+            width: 150px;
+            top: -80px;
+        }
+        
+        .branch-event .event-content {
+            width: 200px;
+        }
+        
+        .branch-left .branch-event {
+            left: -125px;
+        }
+        
+        .branch-right .branch-event {
+            right: -125px;
         }
         
         .psychology-text {
@@ -363,7 +429,7 @@
                     <h1 class="character-name">Андрей Комончиков</h1>
                     <div class="character-callsign">Позывной: "Комовец"</div>
                 </div>
-                <div class="game-logo">Arma 3</div>
+                <div class="game-logo">Metro Exodus</div>
             </div>
         </div>
     </header>
@@ -439,41 +505,143 @@
             <div class="tab-content" id="biography">
                 <div class="metro-border">
                     <h2 class="section-title">Хронология событий</h2>
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <div class="timeline-date">5 лет</div>
-                            <div class="timeline-content">
-                                Трагически потерял обоих родителей в автомобильной аварии. Это событие наложило отпечаток на всё его детство и дальнейшую жизнь.
+                    <div class="timeline-map">
+                        <div class="timeline-track"></div>
+                        <div class="timeline-events">
+                            <!-- Событие 1 -->
+                            <div class="timeline-event">
+                                <div class="timeline-marker"></div>
+                                <div class="event-content">
+                                    <div class="event-year">5 лет</div>
+                                    <div class="event-title">Трагедия в семье</div>
+                                    <div class="event-description">
+                                        Трагически потерял обоих родителей в автомобильной аварии по дороге в гости к родственникам. 
+                                        Воспитывался бабушкой, которая привила ему строгие моральные принципы и чувство долга.
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-date">11 лет</div>
-                            <div class="timeline-content">
-                                Первая любовь закончилась болезненным предательством, что укрепило его недоверие к людям и сформировало закрытый характер.
+                            
+                            <!-- Событие 2 -->
+                            <div class="timeline-event">
+                                <div class="timeline-marker"></div>
+                                <div class="event-content">
+                                    <div class="event-year">11 лет</div>
+                                    <div class="event-title">Первое предательство</div>
+                                    <div class="event-description">
+                                        Первая любовь к однокласснице закончилась болезненным предательством - она распускала слухи 
+                                        о его семье после ссоры. Это укрепило его недоверие к людям и сформировало закрытый характер.
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-date">22 года</div>
-                            <div class="timeline-content">
-                                После службы в армии вступает в ЧВК 'MAP', где проходит интенсивную подготовку и участвует в первых боевых операциях.
+                            
+                            <!-- Событие 3 -->
+                            <div class="timeline-event">
+                                <div class="branch branch-left">
+                                    <div class="branch-event">
+                                        <div class="timeline-marker"></div>
+                                        <div class="event-content">
+                                            <div class="event-year">18 лет</div>
+                                            <div class="event-title">Призыв в армию</div>
+                                            <div class="event-description">
+                                                Пошел служить в воздушно-десантные войска. Прошел подготовку в учебном центре 
+                                                ВДВ в Омске, где проявил себя как дисциплинированный и способный солдат.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="timeline-marker"></div>
+                                <div class="event-content">
+                                    <div class="event-year">22 года</div>
+                                    <div class="event-title">Вступление в ЧВК 'MAP'</div>
+                                    <div class="event-description">
+                                        После демобилизации и неудачной попытки устроиться на гражданскую работу, 
+                                        был завербован в частную военную компанию 'MAP'. Прошел интенсивную подготовку 
+                                        и участвовал в первых боевых операциях на Северном Кавказе.
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-date">26 лет</div>
-                            <div class="timeline-content">
-                                Направлен в Сирию, где принимает участие в боевых действиях. Получает ценный опыт ведения боя в городских условиях и пустыне.
+                            
+                            <!-- Событие 4 -->
+                            <div class="timeline-event">
+                                <div class="branch branch-left">
+                                    <div class="branch-event">
+                                        <div class="timeline-marker"></div>
+                                        <div class="event-content">
+                                            <div class="event-year">24 года</div>
+                                            <div class="event-title">Проект "Новороссия"</div>
+                                            <div class="event-description">
+                                                Участвовал в боевых действиях на востоке Украины. Получил первое серьезное 
+                                                ранение, но продолжил службу после реабилитации. Заслужил репутацию 
+                                                надежного бойца.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="timeline-marker"></div>
+                                <div class="event-content">
+                                    <div class="event-year">26 лет</div>
+                                    <div class="event-title">Сирийский конфликт</div>
+                                    <div class="event-description">
+                                        Направлен в Сирию в составе группы ЧВК 'MAP'. Участвовал в освобождении Пальмиры, 
+                                        боях за Алеппо. Приобрел ценный опыт ведения боя в городских условиях и пустыне. 
+                                        Прошел курсы тактической медицины.
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-date">34 года</div>
-                            <div class="timeline-content">
-                                После многих лет партизанской войны в Сирии возвращается в Россию. За время службы приобрел репутацию надежного и опытного бойца.
+                            
+                            <!-- Событие 5 -->
+                            <div class="timeline-event">
+                                <div class="branch branch-right">
+                                    <div class="branch-event">
+                                        <div class="timeline-marker"></div>
+                                        <div class="event-content">
+                                            <div class="event-year">31 год</div>
+                                            <div class="event-title">Ранение в Хомсе</div>
+                                            <div class="event-description">
+                                                Получил серьезное осколочное ранение во время штурма позиций в провинции Хомс. 
+                                                Провел 2 месяца в госпитале, но отказался от демобилизации и вернулся в строй.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="timeline-marker"></div>
+                                <div class="event-content">
+                                    <div class="event-year">34 года</div>
+                                    <div class="event-title">Возвращение в Россию</div>
+                                    <div class="event-description">
+                                        После 8 лет непрерывной службы в горячих точках вернулся в Россию. За время службы 
+                                        приобрел репутацию опытного и хладнокровного бойца. Устроился на работу в службу 
+                                        безопасности частной компании.
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-date">39 лет</div>
-                            <div class="timeline-content">
-                                Настоящее время. Продолжает работать в зонах конфликтов, передавая опыт молодым бойцам и выполняя особые задания.
+                            
+                            <!-- Событие 6 -->
+                            <div class="timeline-event">
+                                <div class="branch branch-left">
+                                    <div class="branch-event">
+                                        <div class="timeline-marker"></div>
+                                        <div class="event-content">
+                                            <div class="event-year">37 лет</div>
+                                            <div class="event-title">Служба в СОБР</div>
+                                            <div class="event-description">
+                                                После проверки был принят на службу в СОБР. Участвовал в нескольких 
+                                                спецоперациях по задержанию опасных преступников. Получил благодарность 
+                                                от руководства за профессиональные действия.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="timeline-marker"></div>
+                                <div class="event-content">
+                                    <div class="event-year">39 лет</div>
+                                    <div class="event-title">Настоящее время</div>
+                                    <div class="event-description">
+                                        Продолжает работать в зонах конфликтов, передавая опыт молодым бойцам и выполняя 
+                                        особые задания. Сохраняет связи с бывшими коллегами из ЧВК 'MAP' и силовых структур. 
+                                        Живет уединенно, редко поддерживая контакты с внешним миром.
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -482,7 +650,7 @@
                 <div class="metro-border">
                     <h2 class="section-title">Психологический портрет</h2>
                     <p class="psychology-text">
-                        Андрей — закаленный в боях профессионал, для которого война стала привычной средой. Многократно сталкивался с гибелью товарищей, что выработало в нем психологическую защиту — эмоциональную отстраненность. Не склонен к сантиментам, принимает решения холодно и расчетливо. Сохраняет верность немногим близким людям, но новых связей избегает. В критических ситуациях демонстрирует хладнокровие и выдержку, приобретенные за годы службы в горячих точках. Имеет развитое чувство долга и ответственности за своих людей. Потеря родителей в детстве и предательство в юности сформировали его замкнутый характер и недоверие к окружающим.
+                        Андрей — закаленный в боях профессионал, для которого война стала привычной средой. Многократно сталкивался с гибелью товарищей, что выработало в нем психологическую защиту — эмоциональную отстраненность. Не склонен к сантиментам, принимает решения холодно и расчетливо. Сохраняет верность немногим близким людям, но новых связей избегает. В критических ситуациях демонстрирует хладнокровие и выдержку, приобретенные за годы службы в горячих точках. Имеет развитое чувство долга и ответственности за своих людей. Потеря родителей в детстве и предательство в юности сформировали его замкнутый характер и недоверие к окружающим. Несмотря на внешнюю суровость, сохранил внутренний моральный кодекс, не позволяющий ему причинять вред civilians. В последние годы все чаще задумывается о смысле своей жизни и возможности начать все заново.
                     </p>
                 </div>
             </div>
@@ -491,18 +659,18 @@
                 <div class="metro-border">
                     <h2 class="section-title">Связи и контакты</h2>
                     <ul class="connections-list">
-                        <li><strong>ЧВК 'MAP'</strong> - Имеет прочные связи с руководством организации, включая основателей и ключевых командиров</li>
-                        <li><strong>Вооруженные Силы РФ</strong> - Поддерживает контакты с высокопоставленными офицерами различных родов войск</li>
-                        <li><strong>Ветераны конфликтов</strong> - Обширная сеть контактов среди ветеранов различных горячих точек</li>
-                        <li><strong>Силовые структуры</strong> - Знаком с представителями силовых ведомств нескольких стран</li>
-                        <li><strong>Бывшие коллеги из СОБР и ОМОН</strong> - Сохранил связи с некоторыми бывшими сослуживцами</li>
-                        <li><strong>Местные проводники</strong> - Имеет доверенных контактов в регионах своих операций</li>
+                        <li><strong>ЧВК 'MAP'</strong> - Имеет прочные связи с руководством организации, включая основателей и ключевых командиров. Особенно близкие отношения с командиром группы "Вепрь".</li>
+                        <li><strong>Вооруженные Силы РФ</strong> - Поддерживает контакты с высокопоставленными офицерами различных родов войск, в основном с теми, с кем пересекался в зонах конфликтов.</li>
+                        <li><strong>Ветераны конфликтов</strong> - Обширная сеть контактов среди ветеранов различных горячих точек, от Афганистана до Сирии. Регулярно встречается с некоторыми из них.</li>
+                        <li><strong>Силовые структуры</strong> - Знаком с представителями силовых ведомств нескольких стран, в основном через совместные операции.</li>
+                        <li><strong>Бывшие коллеги из СОБР и ОМОН</strong> - Сохранил связи с некоторыми бывшими сослуживцами, хотя поддерживает отношения лишь с немногими.</li>
+                        <li><strong>Местные проводники</strong> - Имеет доверенных контактов в регионах своих операций, в основном на Ближнем Востоке и в Восточной Европе.</li>
                     </ul>
                 </div>
                 
                 <div class="metro-border">
                     <h2 class="section-title">Репутация</h2>
-                    <p>Среди сослуживцев и командиров имеет репутацию надежного и профессионального бойца, способного выполнять задачи в самых сложных условиях. Известен своей выдержкой и способностью сохранять хладнокровие в критических ситуациях. В то же время, его замкнутость и недоверие к новым людям иногда создают трудности в установлении контактов с непроверенными лицами.</p>
+                    <p>Среди сослуживцев и командиров имеет репутацию надежного и профессионального бойца, способного выполнять задачи в самых сложных условиях. Известен своей выдержкой и способностью сохранять хладнокровие в критических ситуациях. В то же время, его замкнутость и недоверие к новым людям иногда создают трудности в установлении контактов с непроверенными лицами. В бою ценится за точность, расчетливость и умение принимать верные решения под давлением. Имеет прозвище "Старик" среди молодых бойцов за свой опыт и неторопливую, но точную манеру действий.</p>
                 </div>
             </div>
         </div>
@@ -510,7 +678,7 @@
     
     <footer>
         <div class="container">
-            <p>Досье персонажа | Андрей "Комовец" Комончиков | Arma 3</p>
+            <p>Досье персонажа | Андрей "Комовец" Комончиков | Metro Exodus</p>
         </div>
     </footer>
 
@@ -523,9 +691,11 @@
                 tab.addEventListener('click', function() {
                     const targetTab = this.getAttribute('data-tab');
                     
+                    // Убираем активный класс у всех вкладок и контента
                     tabs.forEach(t => t.classList.remove('active'));
                     tabContents.forEach(c => c.classList.remove('active'));
                     
+                    // Добавляем активный класс текущей вкладке и соответствующему контенту
                     this.classList.add('active');
                     document.getElementById(targetTab).classList.add('active');
                 });
