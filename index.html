@@ -873,13 +873,22 @@
     </div>
 
     <script>
-        function playSound(type) {
-            const soundNumber = Math.floor(Math.random() * 9) + 1;
+        function rSound(type) {
+            const soundNumber = Math.floor(Math.random() * 3) + 1;
             const audio = new Audio(`sounds/terminal/${type}_0${soundNumber}.mp3`);
             audio.volume = 0.3;
             audio.play().catch(e => console.log("Audio play failed:", e));
             
             console.log(`Playing sound: sounds/terminal/${type}_0${Math.floor(Math.random() * 9) + 1}.mp3`);
+        }
+
+        function wSound(type) {
+            const soundNumber = Math.floor(Math.random() * 9) + 1;
+            const audio = new Audio(`sounds/terminal/${type}_0${soundNumber}.wav`);
+            audio.volume = 0.3;
+            audio.play().catch(e => console.log("Audio play failed:", e));
+            
+            console.log(`Playing sound: sounds/terminal/${type}_0${Math.floor(Math.random() * 9) + 1}.wav`);
         }
 
         function generateRandomIP() {
@@ -937,7 +946,7 @@
                 const message = requestMessages[Math.floor(Math.random() * requestMessages.length)];
                 
                 addTerminalLine(`${ip}:${port} :: ${country} :: "${message}"`);
-                playSound("requests");
+                rSound("requests");
             }, delay);
         }
 
@@ -959,7 +968,7 @@
                 const typingInterval = setInterval(() => {
                     if (i < filePath.length) {
                         commandInput.textContent += filePath.charAt(i);
-                        playSound("words");
+                        wSound("words");
                         i++;
                     } else {
                         clearInterval(typingInterval);
